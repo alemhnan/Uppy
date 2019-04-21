@@ -1,4 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
+import { Notification } from '../../Interfaces';
 
 let options = {};
 if (process.env.IS_OFFLINE) {
@@ -10,39 +11,26 @@ const dynamoDBClient = new DynamoDB.DocumentClient(options);
 // tslint:disable-next-line: variable-name
 const { DYNAMODB_TABLE_NAME: TableName = 'Users' } = process.env;
 
-export const createUserNotification = async (email: string) => {
-  const timestamp = Date.now();
-
-  // tslint:disable-next-line: variable-name
-  // const Item = {
-  //   email,
-  //   notificationId: timestamp,
-  // };
+export const createUserNotification = async (notification: Notification) => {
 
   return dynamoDBClient
-    .put({
-      TableName,
-      Item: { email, notificationId: timestamp },
-    })
+    .put({ TableName, Item: notification })
     .promise();
 };
 
-export const readUserNotifications = async (email: string) => {
+export const readUserNotifications = async (email: string): Promise<Notification[]> => {
+  if (!email) {
+    return [];
+  }
 
   const params = {
     TableName,
     ExpressionAttributeValues: {
       ':email': email,
     },
-    // ProjectionExpression: '#timestamp, id, userId, ui, service',
+    ProjectionExpression: 'message, notificationId',
     KeyConditionExpression: 'email = :email',
-    // ExpressionAttributeNames: {
-    //   '#ui': 'ui',
-    //   '#timestamp': 'timestamp',
-    // },
-    // FilterExpression: 'attribute_exists(#ui) and NOT #ui = :null',
-    ScanIndexForward: false,
-    // Limit: PAGINATION_LIMIT,
   };
-  return dynamoDBClient.query(params).promise();
+  const { Items: notifications } = await dynamoDBClient.query(params).promise();
+  return notifications as Notification[];
 };

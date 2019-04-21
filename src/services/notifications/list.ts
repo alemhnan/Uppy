@@ -1,16 +1,10 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import { readUserNotifications } from '../../libs/Storage/Dynamo';
+import { response } from '../../libs/ResponseBuilder';
 
-export const index: APIGatewayProxyHandler = async () => {
+export const index: APIGatewayProxyHandler = async (event) => {
+  const email = decodeURIComponent(event.pathParameters!.email);
+  const notifications = await readUserNotifications(email);
 
-  const c = await readUserNotifications('alessandro.maccagnan@gmail.com');
-
-  const message = {
-    c,
-  };
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify(message, null, 2),
-  };
+  return response({ body: notifications });
 };

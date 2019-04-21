@@ -23,7 +23,7 @@ list:
   events:
     - http:
         method: get
-        path: notifications
+        path: notifications/{email}
   iamRoleStatements:
     - Effect: Allow
       Action:
