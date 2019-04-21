@@ -19,6 +19,10 @@ create:
       - dynamodb:PutItem
       Resource:
         - "Fn::GetAtt": [ UsersTable, Arn ]
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+      Resource: "*"
 
 list:
   handler: src/services/notifications/list.index
