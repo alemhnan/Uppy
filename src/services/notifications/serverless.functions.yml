@@ -4,3 +4,29 @@ hello:
     - http:
         method: get
         path: hello
+
+create:
+  handler: src/services/notifications/create.index
+  events:
+    - http:
+        method: post
+        path: notifications
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+      - dynamodb:PutItem
+      Resource:
+        - "Fn::GetAtt": [ UsersTable, Arn ]
+
+list:
+  handler: src/services/notifications/list.index
+  events:
+    - http:
+        method: get
+        path: notifications
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+      - dynamodb:Query
+      Resource:
+        - "Fn::GetAtt": [ UsersTable, Arn ]

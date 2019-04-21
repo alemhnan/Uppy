@@ -1,5 +1,8 @@
 dev:
   LAMBDA_REGION: 'eu-central-1'
+  DYNAMODB_USER_TABLE_NAME: 'Users'
+
 
 prod:
   LAMBDA_REGION: 'eu-central-1'
+  DYNAMODB_USER_TABLE_NAME: 'Users'
