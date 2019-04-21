@@ -1,0 +1,34 @@
+{
+  "name": "uppy",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start.local": "npx sls offline start",
+    "deploy.dev": "npx sls deploy --conceal --aws-s3-accelerate -v --stage dev",
+    "deploy.prod": "npx sls deploy --conceal --aws-s3-accelerate -v --stage prod",
+    "lint": "npx tslint  --project .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alessandro Maccagnan <alessandro.maccagnan@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.24",
+    "@types/node": "11.13.6",
+    "aws-sdk": "2.441.0",
+    "serverless": "^1.41.0",
+    "serverless-iam-roles-per-function": "1.0.4",
+    "serverless-offline": "4.9.4",
+    "serverless-plugin-reducer": "3.2.0",
+    "serverless-webpack": "5.2.0",
+    "ts-loader": "5.3.3",
+    "ts-node": "^8.1.0",
+    "tslint": "^5.16.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.4.3",
+    "typescript-tslint-plugin": "^0.3.1",
+    "webpack": "4.30.0",
+    "webpack-node-externals": "1.7.2"
+  },
+  "dependencies": {}
+}

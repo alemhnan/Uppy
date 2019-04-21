@@ -1,0 +1,38 @@
+service: uppy
+
+custom:
+  webpack:
+    includeModules: true
+  vars: ${file(./vars.yml):${opt:stage, 'dev'}}
+  serverless-offline:
+    port: 4000
+
+plugins:
+  - serverless-webpack
+  - serverless-plugin-reducer
+  - serverless-iam-roles-per-function
+  - serverless-offline
+
+package:
+  individually: true
+  exclude:
+    - .dynamodb/**
+    - .editorconfig
+    - .gitignore
+    - README.md
+    - package.json
+    - package-lock.json
+    - vars.yml
+    - node_modules/**/aws-sdk/**
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ${self:custom.vars.LAMBDA_REGION}
+  stage: ${opt:stage, 'dev'}
+
+  environment:
+    ENVIRONMENT: ${opt:stage, 'dev'}
+
+functions:
+  notification-hello: ${file(./src/services/notifications/serverless.functions.yml):hello}

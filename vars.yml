@@ -1,0 +1,5 @@
+dev:
+  LAMBDA_REGION: 'eu-central-1'
+
+prod:
+  LAMBDA_REGION: 'eu-central-1'

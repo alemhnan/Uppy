@@ -1,0 +1,6 @@
+hello:
+  handler: src/services/notifications/hello.index
+  events:
+    - http:
+        method: get
+        path: hello
