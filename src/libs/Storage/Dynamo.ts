@@ -1,12 +1,20 @@
-import { DynamoDB } from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { Notification } from '../../Interfaces';
+
+import { Agent } from 'https';
+const sslAgent = new Agent({
+  keepAlive: true,
+  maxSockets: 50,
+  rejectUnauthorized: true,
+});
+AWS.config.update({ httpOptions: { agent: sslAgent } });
 
 let options = {};
 if (process.env.IS_OFFLINE) {
   options = { region: 'localhost', endpoint: 'http://localhost:8000' };
 }
 
-const dynamoDBClient = new DynamoDB.DocumentClient(options);
+const dynamoDBClient = new AWS.DynamoDB.DocumentClient(options);
 
 // tslint:disable-next-line: variable-name
 const { DYNAMODB_TABLE_NAME: TableName = 'Users' } = process.env;
