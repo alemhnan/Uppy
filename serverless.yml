@@ -42,7 +42,7 @@ provider:
 
   environment:
     ENVIRONMENT: ${opt:stage, 'dev'}
-    DYNAMODB_TABLE_NAME: ${self:custom.vars.DYNAMODB_USER_TABLE_NAME}
+    DYNAMODB_USER_TABLE_NAME: ${self:custom.vars.DYNAMODB_USER_TABLE_NAME}
 
 
 functions:

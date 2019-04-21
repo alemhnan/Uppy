@@ -1,30 +1,28 @@
 import * as AWS from 'aws-sdk';
+import { Agent } from 'https';
+
 import { Notification } from '../../Interfaces';
 
-import { Agent } from 'https';
-const sslAgent = new Agent({
-  keepAlive: true,
-  maxSockets: 50,
-  rejectUnauthorized: true,
-});
-AWS.config.update({ httpOptions: { agent: sslAgent } });
-
 let options = {};
+
 if (process.env.IS_OFFLINE) {
   options = { region: 'localhost', endpoint: 'http://localhost:8000' };
+} else {
+  const sslAgent = new Agent({
+    keepAlive: true,
+    maxSockets: 50,
+    rejectUnauthorized: true,
+  });
+  AWS.config.update({ httpOptions: { agent: sslAgent } });
 }
 
 const dynamoDBClient = new AWS.DynamoDB.DocumentClient(options);
 
-// tslint:disable-next-line: variable-name
-const { DYNAMODB_TABLE_NAME: TableName = 'Users' } = process.env;
+const { DYNAMODB_USER_TABLE_NAME: userTableName = 'Users' } = process.env;
 
-export const createUserNotification = async (notification: Notification) => {
-
-  return dynamoDBClient
-    .put({ TableName, Item: notification })
-    .promise();
-};
+export const createUserNotification = async (notification: Notification) => dynamoDBClient
+  .put({ TableName: userTableName, Item: notification })
+  .promise();
 
 export const readUserNotifications = async (email: string): Promise<Notification[]> => {
   if (!email) {
@@ -32,7 +30,7 @@ export const readUserNotifications = async (email: string): Promise<Notification
   }
 
   const params = {
-    TableName,
+    TableName: userTableName,
     ExpressionAttributeValues: {
       ':email': email,
     },

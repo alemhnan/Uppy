@@ -2,6 +2,7 @@ hello:
   handler: src/services/notifications/hello.index
   events:
     - http:
+        cors: true
         method: get
         path: hello
 
@@ -9,6 +10,7 @@ create:
   handler: src/services/notifications/create.index
   events:
     - http:
+        cors: true
         method: post
         path: notifications
   iamRoleStatements:
@@ -22,6 +24,7 @@ list:
   handler: src/services/notifications/list.index
   events:
     - http:
+        cors: true
         method: get
         path: notifications/{email}
   iamRoleStatements:
