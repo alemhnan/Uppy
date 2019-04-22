@@ -46,6 +46,5 @@ provider:
 
 
 functions:
-  notification-hello: ${file(./src/services/notifications/serverless.functions.yml):hello}
   notification-create: ${file(./src/services/notifications/serverless.functions.yml):create}
   notification-list: ${file(./src/services/notifications/serverless.functions.yml):list}
